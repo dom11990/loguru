@@ -26,6 +26,12 @@ set(LOGURU_WITH_STREAMS 1)
 set(NDEBUG 0)
 
 
+#set this is cross compiling for another platform, example armhf for Raspberry Pi
+if(!DEB_ARCH)
+	set(DEB_ARCH "amd64")
+endif()
+
+
 
 
 set(LOGURU_FLAGS "-DLOGURU_WITH_STREAMS=${LOGURU_WITH_STREAMS} -DNDEBUG=${NDEBUG}")
@@ -51,9 +57,15 @@ install(TARGETS ${PROJECT_NAME}_static ${PROJECT_NAME}
     PUBLIC_HEADER DESTINATION "/usr/include"
 )
 
+if(!DEB_ARCH)
+	set(DEB_ARCH amd64)
+endif()
+
+
 if(BUILD_DEB)
 	SET(CPACK_GENERATOR "DEB")
 	SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Nope")
+	SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE ${DEB_ARCH})
 	#set(CPACK_DEBIAN_PACKAGE_DEPENDS "")
 	INCLUDE(CPack)
 endif()
