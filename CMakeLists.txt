@@ -8,18 +8,6 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 
-message(STATUS "pThreads found:                 ${Threads_FOUND}")
-message(STATUS "dl found:                       ${DL_FOUND}")
-message(STATUS "CMAKE_SYSROOT:                  ${CMAKE_SYSROOT}")
-message(STATUS "CMAKE_FIND_ROOT_PATH            ${CMAKE_FIND_ROOT_PATH}")
-message(STATUS "includes:                       ${INCLUDE_DIRECTORIES}")
-
-
-# Define the CXX sources
-set ( CXX_SRCS
-	loguru.cpp
-)
-
 
 #compile flags
 set(LOGURU_WITH_STREAMS 1)
@@ -27,9 +15,28 @@ set(NDEBUG 0)
 
 
 #set this is cross compiling for another platform, example armhf for Raspberry Pi
-if(!DEB_ARCH)
+if("${DEB_ARCH}" STREQUAL "")
 	set(DEB_ARCH "amd64")
 endif()
+
+
+
+
+
+
+message(STATUS "pThreads found:                 ${Threads_FOUND}")
+message(STATUS "dl found:                       ${DL_FOUND}")
+message(STATUS "CMAKE_SYSROOT:                  ${CMAKE_SYSROOT}")
+message(STATUS "CMAKE_FIND_ROOT_PATH            ${CMAKE_FIND_ROOT_PATH}")
+message(STATUS "includes:                       ${INCLUDE_DIRECTORIES}")
+message(STATUS "DEB_ARCH:                       ${DEB_ARCH}")
+
+
+# Define the CXX sources
+set ( CXX_SRCS
+	loguru.cpp
+)
+
 
 
 
@@ -56,10 +63,6 @@ install(TARGETS ${PROJECT_NAME}_static ${PROJECT_NAME}
     ARCHIVE DESTINATION "/usr/lib"
     PUBLIC_HEADER DESTINATION "/usr/include"
 )
-
-if(!DEB_ARCH)
-	set(DEB_ARCH amd64)
-endif()
 
 
 if(BUILD_DEB)
